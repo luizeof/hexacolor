@@ -17,5 +17,7 @@ RUN a2emod rewrite
 
 COPY . /var/www/html/
 
+RUN chown -R www-data:www-data /var/www/html
+
 CMD ["apache2-foreground"]
 
