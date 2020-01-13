@@ -167,7 +167,7 @@ try {
                         <tr>
                             <?php foreach ($head as $key => $value) : ?>
                                 <th>
-                                    <?php echo strtoupper($key); ?>%
+                                    <?php echo str_pad(strtoupper($key), 2, '0', STR_PAD_LEFT); ?>%
                                 </th>
                             <?php endforeach; ?>
                         </tr>
