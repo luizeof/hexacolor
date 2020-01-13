@@ -16,4 +16,5 @@ EXPOSE 80
 
 COPY . /var/www/html/
 
-CMD "apache2-foreground"
+CMD ["apache2-foreground"]
+
