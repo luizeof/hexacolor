@@ -13,7 +13,7 @@ RUN cd /tmp && curl -sS https://getcomposer.org/installer | php && mv composer.p
 
 EXPOSE 80
 
-RUN a2emod rewrite
+RUN a2enmod rewrite
 
 COPY . /var/www/html/
 
