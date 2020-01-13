@@ -29,14 +29,18 @@ try {
 
     function get_index($x)
     {
-        return abs(round($x - 1) / 10);
-        //return $x <= 10 ? "a" : "b";
+        global $format;
+        if ($format == 'html') :
+            return abs(round($x - 1) / 10);
+        else :
+            return '';
+        endif;
     }
 
     function get_factor($j)
     {
         global $cols;
-        return $f = round((($j / $cols) - 1.00) + 1.00, 2) * 100;
+        return round((($j / $cols) - 1.00) + 1.00, 2) * 100;
     }
 
     for ($i = 1; $i <= $cols; $i++) :
@@ -44,27 +48,27 @@ try {
         $c["hex"]["transform"]["saturate"][get_index($i)]["$f"] = (string) $hex->saturate($f)->toHex();
     endfor;
 
-    for ($i = 0; $i <= $cols; $i++) :
+    for ($i = 1; $i <= $cols; $i++) :
         $f = get_factor($i);
         $c["hex"]["transform"]["lighten"][get_index($i)]["$f"] = (string) $hex->lighten($f)->toHex();
     endfor;
 
-    for ($i = 0; $i <= $cols; $i++) :
+    for ($i = 1; $i <= $cols; $i++) :
         $f = get_factor($i);
         $c["hex"]["transform"]["darken"][get_index($i)]["$f"] = (string) $hex->darken($f)->toHex();
     endfor;
 
-    for ($i = 0; $i <= $cols; $i++) :
+    for ($i = 1; $i <= $cols; $i++) :
         $f = get_factor($i);
         $c["hex"]["transform"]["brighten"][get_index($i)]["$f"] = (string) $hex->brighten($f)->toHex();
     endfor;
 
-    for ($i = 0; $i <= $cols; $i++) :
+    for ($i = 1; $i <= $cols; $i++) :
         $f = get_factor($i);
         $c["hex"]["transform"]["tint"][get_index($i)]["$f"] = (string) $hex->tint($f)->toHex();
     endfor;
 
-    for ($i = 0; $i <= $cols; $i++) :
+    for ($i = 1; $i <= $cols; $i++) :
         $f = get_factor($i);
         $c["hex"]["transform"]["shade"][get_index($i)]["$f"] = (string) $hex->shade($f)->toHex();
     endfor;
