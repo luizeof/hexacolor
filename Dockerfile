@@ -2,7 +2,6 @@ FROM php:7.3-apache
 
 MAINTAINER luizeof <luizeof@gmail.com>
 
-# disable interactive functions
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
