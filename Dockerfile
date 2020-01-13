@@ -1,8 +1,7 @@
 FROM php:7.3-apache
 
-LABEL "br.com.luizeof"="luizeof"
-LABEL "name"="luizeof"
-LABEL version="1.0.0"
+LABEL name="br.com.luizeof.hexacolor"
+LABEL version="1.1.0"
 
 ENV DEBIAN_FRONTEND noninteractive
 
