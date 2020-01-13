@@ -13,6 +13,8 @@ RUN cd /tmp && curl -sS https://getcomposer.org/installer | php && mv composer.p
 
 EXPOSE 80
 
+RUN a2emod rewrite
+
 COPY . /var/www/html/
 
 CMD ["apache2-foreground"]
