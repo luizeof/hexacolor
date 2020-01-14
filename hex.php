@@ -5,12 +5,29 @@
 require 'vendor/autoload.php';
 
 use OzdemirBurak\Iris\Color\Hex;
+use OzdemirBurak\Iris\Color\Hsl;
 
 $c = array();
 
 $format = empty($_GET["format"]) ? 'json' : $_GET["format"];
 
 $cols = 100;
+
+function get_index($x)
+{
+    global $format;
+    if ($format == 'html') :
+        return abs(round($x - 1) / 10);
+    else :
+        return '';
+    endif;
+}
+
+function get_factor($j)
+{
+    global $cols;
+    return round((($j / $cols) - 1.00) + 1.00, 2) * 100;
+}
 
 try {
     $hex = new Hex('#' . $_GET["cor"]);
@@ -27,50 +44,54 @@ try {
     $c["hex"]["color"]["rgb"] = (string) $hex->toRgb();
     $c["hex"]["color"]["rgba"] = (string) $hex->toRgba();
 
-    function get_index($x)
-    {
-        global $format;
-        if ($format == 'html') :
-            return abs(round($x - 1) / 10);
-        else :
-            return '';
-        endif;
-    }
-
-    function get_factor($j)
-    {
-        global $cols;
-        return round((($j / $cols) - 1.00) + 1.00, 2) * 100;
-    }
+    $c['hex']['transform']['modes'][0]['saturate'] = (string) $hex->saturate($hex->isDark() ? 50 : 50)->toHex();
+    $c['hex']['transform']['modes'][0]['desaturate'] = (string) $hex->desaturate($hex->isDark() ? 60 : 40)->toHex();
+    $c['hex']['transform']['modes'][0]['lighten'] = (string) $hex->lighten($hex->isDark() ? 40 : 40)->toHex();
+    $c['hex']['transform']['modes'][0]['darken'] = (string) $hex->darken($hex->isDark() ? 10 : 25)->toHex();
+    $c['hex']['transform']['modes'][0]['brighten'] = (string) $hex->brighten($hex->isDark() ? 30 : 30)->toHex();
+    $c['hex']['transform']['modes'][0]['tint'] = (string) $hex->tint($hex->isDark() ? 25 : 50)->toHex();
+    $c['hex']['transform']['modes'][0]['shade'] = (string) $hex->shade($hex->isDark() ? 25 : 50)->toHex();
 
     for ($i = 1; $i <= $cols; $i++) :
         $f = get_factor($i);
-        $c["hex"]["transform"]["saturate"][get_index($i)]["$f"] = (string) $hex->saturate($f)->toHex();
+        $cor = (string) $hex->saturate($f)->toHex();
+        $c["hex"]["transform"]["saturate"][get_index($i)]["$f"] = $cor;
     endfor;
 
     for ($i = 1; $i <= $cols; $i++) :
         $f = get_factor($i);
-        $c["hex"]["transform"]["lighten"][get_index($i)]["$f"] = (string) $hex->lighten($f)->toHex();
+        $cor = (string) $hex->desaturate($f)->toHex();
+        $c["hex"]["transform"]["desaturate"][get_index($i)]["$f"] = (string) $cor;
     endfor;
 
     for ($i = 1; $i <= $cols; $i++) :
         $f = get_factor($i);
-        $c["hex"]["transform"]["darken"][get_index($i)]["$f"] = (string) $hex->darken($f)->toHex();
+        $cor = (string) $hex->lighten($f)->toHex();
+        $c["hex"]["transform"]["lighten"][get_index($i)]["$f"] = $cor;
     endfor;
 
     for ($i = 1; $i <= $cols; $i++) :
         $f = get_factor($i);
-        $c["hex"]["transform"]["brighten"][get_index($i)]["$f"] = (string) $hex->brighten($f)->toHex();
+        $cor = (string) $hex->darken($f)->toHex();
+        $c["hex"]["transform"]["darken"][get_index($i)]["$f"] = $cor;
     endfor;
 
     for ($i = 1; $i <= $cols; $i++) :
         $f = get_factor($i);
-        $c["hex"]["transform"]["tint"][get_index($i)]["$f"] = (string) $hex->tint($f)->toHex();
+        $cor = (string) $hex->brighten($f)->toHex();
+        $c["hex"]["transform"]["brighten"][get_index($i)]["$f"] = $cor;
     endfor;
 
     for ($i = 1; $i <= $cols; $i++) :
         $f = get_factor($i);
-        $c["hex"]["transform"]["shade"][get_index($i)]["$f"] = (string) $hex->shade($f)->toHex();
+        $cor = (string) $hex->tint($f)->toHex();
+        $c["hex"]["transform"]["tint"][get_index($i)]["$f"] = $cor;
+    endfor;
+
+    for ($i = 1; $i <= $cols; $i++) :
+        $f = get_factor($i);
+        $cor = (string) $hex->shade($f)->toHex();
+        $c["hex"]["transform"]["shade"][get_index($i)]["$f"] = $cor;
     endfor;
 
     if ($format == 'json') :
